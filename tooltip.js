@@ -1,41 +1,54 @@
 
-
 var ToolTip = function(id,text,position){
-	var element = document.getElementById(id);
-	var tooltip;
+	var showingTooltip;
 
+	var element = document.getElementById(id);
 	var init = function(){
-		tooltip = document.createElement('div');
-		tooltip.innerText = text;
-		tooltip.classList.add('tooltip');
-		element.style.position = 'relative';
+		var tooltipText = text;
+		var tooltipEl = document.createElement('div');
+		tooltipEl.classList.add('tooltip');
+		tooltipEl.innerHTML = tooltipText;
+		document.body.appendChild(tooltipEl);
+		return tooltipEl;
+	}
+	
+	element.addEventListener('mouseover', function(e){
+		var tooltipEl = init();
+		var coords = e.target.getBoundingClientRect();
+		var left = coords.left;
+		var top = coords.top;
 		switch(position) {
-			case 'bottom': 
-			tooltip.style.bottom = '-100%';
+			case 'left':
+			left = left - element.offsetWidth - (tooltipEl.offsetWidth - element.offsetWidth/2);
+			top = top;
 			break;
-			case 'top': 
-			tooltip.style.top = '-100%';
+			case 'right':
+			left = left + element.offsetWidth + element.offsetWidth/2;
+			top = top;
 			break;
-			case 'left': 
-			tooltip.style.right = '100%';
-			tooltip.style.bottom = '45%';
+			case 'top':
+			left = left - element.offsetWidth;
+			top = top - tooltipEl.offsetHeight - element.offsetHeight/2;
 			break;
-			case 'right': 
-			tooltip.style.left = '100%';
-			tooltip.style.top = '45%';
+			case 'bottom':
+			left = left - element.offsetWidth;
+			top = top + tooltipEl.offsetHeight + element.offsetHeight/2;
 			break;
 		}
-	}
-	init();
 
-	element.addEventListener('mouseover', function(e){
-		element.appendChild(tooltip);
+
+		tooltipEl.style.left = left + 'px';
+		tooltipEl.style.top = top + 'px';
+
+		showingTooltip = tooltipEl;
 	})
 	element.addEventListener('mouseout', function(e){
-		element.removeChild(tooltip);
+		if(showingTooltip){
+			document.body.removeChild(showingTooltip);
+		}
+		
 	})
 }
 
-var tooltip1 = new ToolTip('btn','awdawdaw','bottom');
-var tooltip2 = new ToolTip('btn2','awdawdaw','bottom');
-var tooltip2 = new ToolTip('btn3','awdawdaw','bottom');
+var tooltip2 = new ToolTip('btn','awdawdaw','bottom');
+var tooltip3 = new ToolTip('btn3','awdawdaw','bottom');
