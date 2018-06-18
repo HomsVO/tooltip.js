@@ -3,7 +3,7 @@ var ToolTip = function(id,text,position){
 	var showingTooltip;
 
 	var element = document.getElementById(id);
-	var init = function(){
+	var createTooltip = function(){
 		var tooltipText = text;
 		var tooltipEl = document.createElement('div');
 		tooltipEl.classList.add('tooltip');
@@ -11,32 +11,29 @@ var ToolTip = function(id,text,position){
 		document.body.appendChild(tooltipEl);
 		return tooltipEl;
 	}
-	
 	element.addEventListener('mouseover', function(e){
-		var tooltipEl = init();
+		var tooltipEl = createTooltip();
 		var coords = e.target.getBoundingClientRect();
 		var left = coords.left;
 		var top = coords.top;
 		switch(position) {
 			case 'left':
-			left = left - element.offsetWidth - (tooltipEl.offsetWidth - element.offsetWidth/2);
-			top = top;
+			left = left - tooltipEl.offsetWidth - 20;
+			top = (top + element.offsetHeight/2) - tooltipEl.offsetHeight/2;
 			break;
 			case 'right':
-			left = left + element.offsetWidth + element.offsetWidth/2;
-			top = top;
+			left = left + element.offsetWidth + 20;
+			top = (top + element.offsetHeight/2) - tooltipEl.offsetHeight/2;
 			break;
 			case 'top':
-			left = left - element.offsetWidth;
-			top = top - tooltipEl.offsetHeight - element.offsetHeight/2;
+			left =(left + element.offsetWidth/2) - tooltipEl.offsetWidth/2;
+			top = top - tooltipEl.offsetHeight - 20;
 			break;
 			case 'bottom':
-			left = left - element.offsetWidth;
-			top = top + tooltipEl.offsetHeight + element.offsetHeight/2;
+			left = (left + element.offsetWidth/2) - tooltipEl.offsetWidth/2;
+			top = top + element.offsetHeight + 20;
 			break;
 		}
-
-
 		tooltipEl.style.left = left + 'px';
 		tooltipEl.style.top = top + 'px';
 
@@ -49,6 +46,7 @@ var ToolTip = function(id,text,position){
 		
 	})
 }
-
-var tooltip2 = new ToolTip('btn','awdawdaw','bottom');
-var tooltip3 = new ToolTip('btn3','awdawdaw','bottom');
+var ToolTip1 = new ToolTip('btn','Слева','left');
+var ToolTip2 = new ToolTip('btn','Справа','right');
+var ToolTip3 = new ToolTip('btn','Сверху','top');
+var ToolTip4 = new ToolTip('btn','Снизу','bottom');
