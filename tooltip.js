@@ -2,8 +2,6 @@
 var ToolTip = function(id,text,position){
 	if(arguments.length != 3){
 		console.log('Не все аргументы введены');
-		console.log(this)
-		console.log(this.name)
 		return false;
 	}
 	var showingTooltip;
