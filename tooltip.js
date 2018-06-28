@@ -1,7 +1,13 @@
 
 var ToolTip = function(id,text,position){
+	if(arguments.length != 3){
+		console.log('Не все аргументы введены');
+		console.log(this)
+		console.log(this.name)
+		return false;
+	}
 	var showingTooltip;
-
+	var self = this;
 	var element = document.getElementById(id);
 	var createTooltip = function(){
 		var tooltipText = text;
@@ -9,11 +15,20 @@ var ToolTip = function(id,text,position){
 		tooltipEl.classList.add('tooltip');
 		tooltipEl.innerHTML = tooltipText;
 		document.body.appendChild(tooltipEl);
+
 		return tooltipEl;
 	}
-	element.addEventListener('mouseover', function(e){
+	this.show = function(){
+		showingTooltip = setPosition(this);
+	}
+	this.hide = function(){
+			if(showingTooltip){
+			document.body.removeChild(showingTooltip);
+		}
+	}
+	var setPosition = function(context){
 		var tooltipEl = createTooltip();
-		var coords = e.target.getBoundingClientRect();
+		var coords = context.getBoundingClientRect();
 		var left = coords.left;
 		var top = coords.top;
 		switch(position) {
@@ -36,15 +51,10 @@ var ToolTip = function(id,text,position){
 		}
 		tooltipEl.style.left = left + 'px';
 		tooltipEl.style.top = top + 'px';
-
-		showingTooltip = tooltipEl;
-	})
-	element.addEventListener('mouseout', function(e){
-		if(showingTooltip){
-			document.body.removeChild(showingTooltip);
-		}
-		
-	})
+		return tooltipEl;
+	}
+	element.addEventListener('mouseover', this.show);
+	element.addEventListener('mouseout', this.hide);
 }
 var ToolTip1 = new ToolTip('btn','Слева','left');
 var ToolTip2 = new ToolTip('btn','Справа','right');
